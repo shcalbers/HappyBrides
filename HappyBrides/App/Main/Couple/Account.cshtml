@@ -78,6 +78,11 @@
 		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 		var gift_newPriority = Request.Form[FORM_GIFT_NEWPRIORITY].AsInt();
 
+		if (gift.GetOwningWishlist().id != couple.Wishlist.id)
+		{
+		    return;
+		}
+
 		gift.SetPriority(gift_newPriority);
 
 		break;
@@ -91,6 +96,11 @@
 		}
 
 		var gift_to_remove = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
+
+		if (gift_to_remove.GetOwningWishlist().id != couple.Wishlist.id)
+		{
+		    return;
+		}
 
 		HappyBridesDB.DeleteGift(couple.Wishlist, gift_to_remove);
 

@@ -49,6 +49,11 @@
 
 		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 
+		if (gift.GetOwningWishlist().id != guest.Wishlist.id)
+		{
+		    return;
+		}
+
 		gift.SetReservationStatus(true);
 
 		break;
