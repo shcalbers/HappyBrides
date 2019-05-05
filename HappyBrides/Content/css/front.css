@@ -1,0 +1,32 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+html, body
+{
+    height: 100%;
+    width: 100%;
+}
+
+html
+{
+    background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0, 0, 0, 0.125) 4px 5px, transparent 5px 9px), radial-gradient(rgba(8, 8, 8, 0.6), rgba(8, 8, 8, 1.0)), url("../img/backgrounds/front.jpg");
+    background-size: auto, cover, cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    text-shadow: 0 0 16px black;
+}
+
+body
+{
+    background-color: transparent;
+}
+
+a[role="button"]
+{
+    text-shadow: none;
+}
+
+#branding
+{
+    font-family: 'Lobster', sans-serif;
+}

@@ -1,0 +1,136 @@
+﻿@using HappyBrides.Authentication
+@{
+    Layout = "_Layout.cshtml";
+
+    Page.Title = "Login";
+
+    /* FORM CONSTANTS */
+
+    const string FORM_LOGIN_TYPE = "login_type";
+
+    const string FORM_COUPLE_EMAIL = "couple_email";
+    const string FORM_COUPLE_PASSWORD = "couple_password";
+
+    const string FORM_GUEST_NAME = "guest_name";
+    const string FORM_GUEST_GUESTCODE = "guest_guestcode";
+
+    /* LOGIN TYPE CONSTANTS */
+
+    const string LOGIN_TYPE_COUPLE = "couple";
+    const string LOGIN_TYPE_GUEST = "guest";
+
+    /* HANDLE POST */
+
+    if (IsPost)
+    {
+	Validation.Add(FORM_LOGIN_TYPE, Validator.Required());
+
+	if (!Validation.IsValid())
+	{
+	    return;
+	}
+
+	var login_type = Request.Form[FORM_LOGIN_TYPE] as string;
+
+	switch (login_type)
+	{
+	    case LOGIN_TYPE_COUPLE:
+
+		Validation.Add(FORM_COUPLE_EMAIL, Validator.Required());
+		Validation.Add(FORM_COUPLE_PASSWORD, Validator.Required());
+
+		if (!Validation.IsValid())
+		{
+		    return;
+		}
+
+		var couple = new CoupleAgent(Session);
+
+		var email = Request.Form[FORM_COUPLE_EMAIL] as string;
+		var password = Request.Form[FORM_COUPLE_PASSWORD] as string;
+
+		couple.Login(email, password);
+
+		if (couple.Identity == Identity.Couple)
+		{
+		    Response.Redirect("~/App/Main/Couple/Account");
+		}
+		else
+		{
+		    Validation.AddFormError("Incorrect username or password!");
+		}
+
+		break;
+
+	    case LOGIN_TYPE_GUEST:
+
+		Validation.Add(FORM_GUEST_NAME, Validator.Required());
+		Validation.Add(FORM_GUEST_GUESTCODE, Validator.Required());
+
+		if (!Validation.IsValid())
+		{
+		    return;
+		}
+
+		var guest = new GuestAgent(Session);
+
+		var name = Request.Form[FORM_GUEST_NAME] as string;
+		var guestcode = Request.Form[FORM_GUEST_GUESTCODE] as string;
+
+		guest.Login(name, guestcode);
+
+		if (guest.Identity == Identity.Guest)
+		{
+		    Response.Redirect("~/App/Main/Guest/Account");
+		}
+		else
+		{
+		    Validation.AddFormError("Incorrect guest code!");
+		}
+
+		break;
+
+	}
+    }
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-6 offset-lg-2 px-4 py-4 bg-white border rounded-left">
+            <h4 class="text-center">Couples</h4>
+            <hr />
+            <form method="post">
+                <div class="form-group">
+                    <label for="@FORM_COUPLE_EMAIL">Email address</label>
+                    <input class="form-control" name="@FORM_COUPLE_EMAIL" type="email" placeholder="Enter email" required />
+                </div>
+                <div class="form-group">
+                    <label for="@FORM_COUPLE_PASSWORD">Password</label>
+                    <input class="form-control" name="@FORM_COUPLE_PASSWORD" type="password" placeholder="Enter password" required />
+                </div>
+                <input name="@FORM_LOGIN_TYPE" type="hidden" value="@LOGIN_TYPE_COUPLE" required />
+                <button class="d-block btn btn-primary mx-auto" type="submit">Login</button>
+            </form>
+        </div>
+        <div class="col-lg-4 col-6 px-4 py-4 bg-white border border-left-0 rounded-right">
+            <h4 class="text-center">Guests</h4>
+            <hr />
+            <form method="post">
+                <div class="form-group">
+                    <label for="@FORM_GUEST_NAME">Name</label>
+                    <input class="form-control" name="@FORM_GUEST_NAME" type="text" placeholder="Enter name" required />
+                </div>
+                <div class="form-group">
+                    <label for="@FORM_GUEST_GUESTCODE">Guest Code</label>
+                    <input class="form-control" name="@FORM_GUEST_GUESTCODE" type="text" placeholder="Enter guest code" required />
+                </div>
+                <input name="@FORM_LOGIN_TYPE" type="hidden" value="@LOGIN_TYPE_GUEST" required />
+                <button class="d-block btn btn-primary mx-auto" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div class="text-center">
+        <a class="text-primary" href="~/App/Portal/Register">Or register here</a>
+    </div>
+</div>

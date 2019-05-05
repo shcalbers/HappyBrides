@@ -1,0 +1,32 @@
+﻿@using HappyBrides.Authentication
+@{
+    Layout = "~/App/_Layout.cshtml";
+
+    var user = new UserAgent(Session);
+
+    switch (user.Identity)
+    {
+	case Identity.Guest:
+	    Response.Redirect("~/App/Main/Guest/Account");
+	    break;
+
+	case Identity.Couple:
+	    Response.Redirect("~/App/Main/Couple/Account");
+	    break;
+    }
+}
+
+@* Forward 'head' section to '~/App/_Layout.cshtml'. *@
+@section head
+{
+    <link rel="stylesheet" href="~/Content/css/portal.css" />
+
+    @RenderSection("head", false)
+}
+
+<h1 class="display-1 text-center" id="branding">HappyBrides</h1>
+<hr class="w-75" />
+<h2 class="font-weight-light text-center">@Page.Title</h2>
+<br />
+
+@RenderBody()

@@ -1,0 +1,20 @@
+﻿@using HappyBrides.Authentication
+@{
+    Layout = "~/App/Main/_Layout.cshtml";
+
+    var user = new UserAgent(Session);
+
+    if (user.Identity != Identity.Guest)
+    {
+	Response.Redirect("~/App/Portal/Login");
+    }
+}
+
+@* Forward 'head' section to '~/App/Main/_Layout.cshtml'. *@
+@section head
+{
+    @RenderSection("head", false)
+}
+
+@* Forward the body to '~/App/Main/_Layout.cshtml'. *@
+@RenderBody()

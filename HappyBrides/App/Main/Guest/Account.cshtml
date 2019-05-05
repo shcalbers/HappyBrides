@@ -1,0 +1,97 @@
+﻿@using HappyBrides.Authentication
+@using HappyBrides.Database
+@{
+    Layout = "_Layout.cshtml";
+
+    Page.Title = "Guest";
+
+    /* FORM CONSTANTS */
+
+    const string FORM_ACTION = "action";
+
+    const string FORM_GIFT_ID = "gift_id";
+
+    /* ACTION CONSTANTS */
+
+    const string ACTION_LOGOUT = "logout";
+
+    const string ACTION_RESERVE = "reserve";
+
+    var guest = new GuestAgent(Session);
+
+    if (IsPost)
+    {
+	Validation.Add(FORM_ACTION, Validator.Required());
+
+	if (!Validation.IsValid())
+	{
+	    return;
+	}
+
+	var action = Request.Form[FORM_ACTION] as string;
+
+	switch (action)
+	{
+	    case ACTION_LOGOUT:
+		guest.Logout();
+
+		Response.Redirect("~/App/Portal/Login");
+
+		break;
+
+	    case ACTION_RESERVE:
+		Validation.Add(FORM_GIFT_ID, Validator.Integer(), Validator.Required());
+
+		if (!Validation.IsValid())
+		{
+		    return;
+		}
+
+		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
+
+		gift.SetReservationStatus(true);
+
+		break;
+
+	}
+
+	Response.Redirect("~/App/Main/Guest/Account");
+    }
+
+}
+
+<div class="col-xl-4 bg-light border-right">
+    <br />
+    <h1 class="text-center">Guest Access</h1>
+    <hr />
+    <img class="d-block mt-5 mb-4 mx-auto bg-white rounded-circle border shadow-sm" src="~/Content/img/icons/guest.png" width="192" height="192">
+    <form method="post">
+        <input name="@FORM_ACTION" type="hidden" value="@ACTION_LOGOUT" required>
+        <button class="d-block mx-auto btn btn-primary" type="submit">Logout</button>
+    </form>
+    <hr />
+    <h2 class="text-center">@guest.Name</h2>
+    <p class="text-center">Guest Code: <span class="text-primary">@guest.Wishlist.GetGuestCode()</span></p>
+</div>
+<div class="col-xl bg-white">
+    <br />
+    <h1 class="text-center">Wishlist</h1>
+    <hr />
+    <br />
+    <div class="w-50 p-1 mx-auto border rounded overflow-auto bg-light" id="wishlist">
+        @foreach (var gift in guest.Wishlist.GetUnreservedGifts())
+	{
+	    <div class="rounded p-2 mb-1 bg-white shadow-sm" id="@gift.id">
+		<form method="post">
+		    <div>
+		        <h6 class="d-inline">@gift.GetName()</h6>
+			<input name="@FORM_GIFT_ID" type="hidden" value="@gift.id" required />
+		        <input name="@FORM_ACTION" type="hidden" value="@ACTION_RESERVE" required />
+		        <button class="d-inline btn btn-light float-right border" type="submit">Reserve</button>
+		    </div>
+		    <p>@gift.GetDescription()</p>
+		</form>
+	    </div>
+	}
+    </div>
+</div>

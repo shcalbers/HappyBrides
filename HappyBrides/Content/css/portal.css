@@ -1,0 +1,19 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+html
+{
+    background-color: var(--light);
+
+    background-image: linear-gradient(var(--light) 50%, transparent), url("../img/patterns/dot.svg");
+    background-repeat: no-repeat, repeat;
+}
+
+body
+{
+    background-color: transparent;
+}
+
+#branding
+{
+    font-family: 'Lobster', sans-serif;
+}
