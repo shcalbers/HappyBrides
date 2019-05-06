@@ -28,7 +28,16 @@
     const string ACTION_CHANGE_PRIORITY = "change_priority";
     const string ACTION_REMOVE_GIFT = "remove_gift";
 
+    /* USER IDENTIFICATION */
+
     var couple = new CoupleAgent(Session);
+
+    if (couple.Identity == Identity.Unknown)
+    {
+	Response.Redirect("~/App/Portal/Login");
+    }
+
+    /* HANDLE POST */
 
     if (IsPost)
     {
@@ -78,6 +87,7 @@
 		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 		var gift_newPriority = Request.Form[FORM_GIFT_NEWPRIORITY].AsInt();
 
+		//Ensure that the user didn't pass a forged gift id.
 		if (gift.GetOwningWishlist().id != couple.Wishlist.id)
 		{
 		    return;
@@ -97,17 +107,19 @@
 
 		var gift_to_remove = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 
+		//Ensure that the user didn't pass a forged gift id.
 		if (gift_to_remove.GetOwningWishlist().id != couple.Wishlist.id)
 		{
 		    return;
 		}
 
-		HappyBridesDB.DeleteGift(couple.Wishlist, gift_to_remove);
+		HappyBridesDB.DeleteGift(gift_to_remove);
 
 		break;
 
 	}
 
+	//Prevent refreshing from resubmitting POST's.
 	Response.Redirect("~/App/Main/Couple/Account");
     }
 

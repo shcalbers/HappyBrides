@@ -201,20 +201,15 @@ namespace HappyBrides.Database
 
 	/* DELETE */
 
-	/// <summary>
-	/// Deletes a gift, using a <see cref="WishlistHandle"/> as a fail-safe to make sure deleting a gift affects the intended wishlist.
-	/// </summary>
-	/// <param name="wishlist">A <see cref="WishlistHandle"/> provided to make sure the gift belongs to the intended wishlist.</param>
-	/// <param name="gift">A handle to the gift to delete.</param>
-	public static void DeleteGift(WishlistHandle wishlist, GiftHandle gift)
+	public static void DeleteGift(GiftHandle gift)
 	{
-	    const string SHIFT_PRIORITIES_STATEMENT = "UPDATE Gift SET priority = (priority - 1) WHERE priority > @0 AND wishlist_id = @1";
-	    const string DELETE_GIFT_STATEMENT = "DELETE FROM Gift WHERE id = @0 AND wishlist_id = @1";
+	    const string LEFT_SHIFT_PRIORITIES_STATEMENT = "UPDATE Gift SET priority = (priority - 1) WHERE priority > @0";
+	    const string DELETE_GIFT_STATEMENT = "DELETE FROM Gift WHERE id = @0";
 
 	    using (var connection = Connection.Open(DATABASE_NAME))
 	    {
-		connection.Execute(SHIFT_PRIORITIES_STATEMENT, gift.GetPriority(), wishlist.id);
-		connection.Execute(DELETE_GIFT_STATEMENT, gift.id, wishlist.id);
+		connection.Execute(LEFT_SHIFT_PRIORITIES_STATEMENT, gift.GetPriority());
+		connection.Execute(DELETE_GIFT_STATEMENT, gift.id);
 	    }
 	}
 	

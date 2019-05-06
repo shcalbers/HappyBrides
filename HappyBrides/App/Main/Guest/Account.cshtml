@@ -17,7 +17,16 @@
 
     const string ACTION_RESERVE = "reserve";
 
+    /* USER IDENTIFICATION */
+
     var guest = new GuestAgent(Session);
+
+    if (guest.Identity == Identity.Unknown)
+    {
+	Response.Redirect("~/App/Portal/Login");
+    }
+
+    /* HANDLE POST */
 
     if (IsPost)
     {
@@ -49,6 +58,7 @@
 
 		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 
+		//Ensure that the user didn't pass a forged gift id.
 		if (gift.GetOwningWishlist().id != guest.Wishlist.id)
 		{
 		    return;
@@ -60,6 +70,7 @@
 
 	}
 
+	//Prevent refreshing from resubmitting POST's.
 	Response.Redirect("~/App/Main/Guest/Account");
     }
 
