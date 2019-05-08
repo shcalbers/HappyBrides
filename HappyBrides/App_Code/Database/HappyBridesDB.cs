@@ -38,6 +38,7 @@ namespace HappyBrides.Database
 
 	    const string CREATE_COUPLE_STATEMENT = "INSERT INTO Couple (name, partner_name, account_id, wishlist_id) VALUES (@0, @1, @2, @3)";
 
+	    //Create the actual couple.
 	    using (var connection = Connection.Open(DATABASE_NAME))
 	    {
 		connection.Execute(CREATE_COUPLE_STATEMENT, name, partnerName, account.id, wishlist.id);
@@ -143,7 +144,7 @@ namespace HappyBrides.Database
 	/// <returns></returns>
 	public static CommentHandle CreateComment(GiftHandle gift, string sender, string content)
 	{
-	    throw new Exception();
+	    throw new NotImplementedException();
 	}
 
 	/* RETRIEVE */
@@ -203,12 +204,12 @@ namespace HappyBrides.Database
 
 	public static void DeleteGift(GiftHandle gift)
 	{
-	    const string LEFT_SHIFT_PRIORITIES_STATEMENT = "UPDATE Gift SET priority = (priority - 1) WHERE priority > @0";
+	    const string LEFT_SHIFT_PRIORITIES_STATEMENT = "UPDATE Gift SET priority = (priority - 1) WHERE wishlist_id = @0 AND priority > @1";
 	    const string DELETE_GIFT_STATEMENT = "DELETE FROM Gift WHERE id = @0";
 
 	    using (var connection = Connection.Open(DATABASE_NAME))
 	    {
-		connection.Execute(LEFT_SHIFT_PRIORITIES_STATEMENT, gift.GetPriority());
+		connection.Execute(LEFT_SHIFT_PRIORITIES_STATEMENT, gift.GetOwningWishlist().id, gift.GetPriority());
 		connection.Execute(DELETE_GIFT_STATEMENT, gift.id);
 	    }
 	}
