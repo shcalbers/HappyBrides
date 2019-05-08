@@ -17,3 +17,8 @@ body
 {
     font-family: 'Lobster', sans-serif;
 }
+
+.validation-summary-errors ul
+{
+    margin-bottom: 0;
+}
