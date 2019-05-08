@@ -98,9 +98,6 @@ namespace HappyBrides.Database
 	    {
 		int current_priority = GetPriority();
 
-		System.Diagnostics.Debug.Write(current_priority);
-		System.Diagnostics.Debug.Write(new_priority);
-
 		if (new_priority > current_priority)
 		{
 		    connection.Execute(LEFT_SHIFT_PRIORITIES_STATEMENT, GetOwningWishlist().id, current_priority, new_priority);
