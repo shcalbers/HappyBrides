@@ -1,14 +1,10 @@
 ﻿using HappyBrides.Random;
 using System;
-using System.Diagnostics;
 using Connection = WebMatrix.Data.Database;
 
 namespace HappyBrides.Database
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
     public static class HappyBridesDB
     {
 
@@ -16,14 +12,6 @@ namespace HappyBrides.Database
 
 	/* CREATE */
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="email"></param>
-	/// <param name="password"></param>
-	/// <param name="name"></param>
-	/// <param name="partnerName"></param>
-	/// <returns></returns>
 	public static CoupleHandle CreateCouple(string email, string password, string name, string partnerName)
 	{
 	    //Create a new account for this couple.
@@ -47,12 +35,6 @@ namespace HappyBrides.Database
 	    }
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="email"></param>
-	/// <param name="password"></param>
-	/// <returns></returns>
 	private static AccountHandle CreateAccount(string email, string password)
 	{
 	    const string EXISTS_ACCOUNT_STATEMENT = "SELECT 1 FROM Account WHERE email = @0";
@@ -81,10 +63,6 @@ namespace HappyBrides.Database
 	    }
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <returns></returns>
 	private static WishlistHandle CreateWishlist()
 	{
 	    const string CREATE_WISHLIST_STATEMENT = "INSERT INTO Wishlist (guestcode) VALUES (@0)";
@@ -113,13 +91,6 @@ namespace HappyBrides.Database
 	    }
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="wishlist"></param>
-	/// <param name="name"></param>
-	/// <param name="description"></param>
-	/// <returns></returns>
 	public static GiftHandle CreateGift(WishlistHandle wishlist, string name, string description)
 	{
 	    const string RETRIEVE_MAX_GIFTPRIORITY_STATEMENT = "SELECT TOP 1 priority FROM Gift WHERE wishlist_id = @0 ORDER BY priority DESC";
@@ -135,13 +106,6 @@ namespace HappyBrides.Database
 	    }
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="gift"></param>
-	/// <param name="sender"></param>
-	/// <param name="content"></param>
-	/// <returns></returns>
 	public static CommentHandle CreateComment(GiftHandle gift, string sender, string content)
 	{
 	    throw new NotImplementedException();
@@ -149,12 +113,6 @@ namespace HappyBrides.Database
 
 	/* RETRIEVE */
 
-	/// <summary>
-	/// Retrieves a couple from the database.
-	/// </summary>
-	/// <param name="email">The email of the account belonging to the couple.</param>
-	/// <param name="password">The password of the account belonging to the couple.</param>
-	/// <returns>A handle to the couple if one was found, null otherwise.</returns>
 	public static CoupleHandle RetrieveCouple(string email, string password)
 	{
 	    const string RETRIEVE_ACCOUNTID_STATEMENT = "SELECT id FROM Account WHERE email = @0 AND password = @1";
@@ -176,11 +134,6 @@ namespace HappyBrides.Database
 	    }
 	}
 
-	/// <summary>
-	/// Retrieves a wishlist from the database.
-	/// </summary>
-	/// <param name="guestCode">The guest code of the wishlist to look-up.</param>
-	/// <returns>A handle to the wishlist if one was found, null otherwise.</returns>
 	public static WishlistHandle RetrieveWishlist(string guestCode)
 	{
 	    const string RETRIEVE_WISHLISTID_STATEMENT = "SELECT id FROM Wishlist WHERE guestcode = @0";
