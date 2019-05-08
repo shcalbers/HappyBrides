@@ -93,11 +93,12 @@
     <Content Include="Content\css\front.css" />
     <Content Include="Content\css\layout.css" />
     <Content Include="Content\css\portal.css" />
+    <Content Include="Content\img\icons\couple.png" />
+    <Content Include="Content\img\icons\guest.png" />
     <Content Include="Content\img\patterns\bgd-pattern.jpg" />
     <Content Include="Content\img\backgrounds\front.jpg" />
     <Content Include="Content\img\patterns\dot.svg" />
     <Content Include="Content\img\patterns\navbar-pattern.jpg" />
-    <Content Include="Content\img\icons\user.png" />
     <Content Include="Content\js\wishlist.js" />
     <Content Include="Web.config" />
   </ItemGroup>
