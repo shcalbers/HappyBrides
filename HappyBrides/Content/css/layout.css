@@ -37,6 +37,11 @@ body
     background-blend-mode: overlay;
 }
 
+.clickable:hover
+{
+    cursor: pointer;
+}
+
 #branding
 {
     font-family: 'Lobster', sans-serif;

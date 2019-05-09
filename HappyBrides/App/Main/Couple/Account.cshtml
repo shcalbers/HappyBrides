@@ -169,7 +169,7 @@
         <!-- FIX CENTERING -->
         <span class="float-left fas fa-plus-circle text-white"></span>
         Your Wishlist
-        <span class="zindex-popover float-right fas fa-plus-circle" data-toggle="modal" data-target="#add_gift_modal"></span>
+        <span class="zindex-popover float-right fas fa-plus-circle clickable" data-toggle="modal" data-target="#add_gift_modal"></span>
     </h1>
     <hr />
     <p class="text-center">Guest Code: <span class="text-primary">@couple.Wishlist.GetGuestCode()</span></p>
@@ -177,7 +177,7 @@
         @foreach (var gift in couple.Wishlist.GetGifts())
 	{
             <div class="rounded p-2 mb-1 bg-white shadow-sm" id="@gift.id">
-                <h6>@gift.GetName()<span class="float-right fas fa-times-circle" onclick="removeGift(@gift.id)"></span></h6>
+                <h6>@gift.GetName()<span class="float-right fas fa-times-circle clickable" onclick="removeGift(@gift.id)"></span></h6>
                 <p>@gift.GetDescription()</p>
             </div>
 	}
