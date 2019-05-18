@@ -34,93 +34,93 @@
 
     if (couple.Identity == Identity.Unknown)
     {
-	Response.Redirect("~/App/Portal/Login");
+        Response.Redirect("~/App/Portal/Login");
     }
 
     /* HANDLE POST */
 
     if (IsPost)
     {
-	Validation.Add(FORM_ACTION, Validator.Required());
+        Validation.Add(FORM_ACTION, Validator.Required());
 
-	if (!Validation.IsValid())
-	{
-	    return;
-	}
+        if (!Validation.IsValid())
+        {
+            return;
+        }
 
-	var action = Request.Form[FORM_ACTION] as string;
+        var action = Request.Form[FORM_ACTION] as string;
 
-	switch (action)
-	{
-	    case ACTION_LOGOUT:
-		couple.Logout();
+        switch (action)
+        {
+            case ACTION_LOGOUT:
+                couple.Logout();
 
-		Response.Redirect("~/App/Portal/Login");
+                Response.Redirect("~/App/Portal/Login");
 
-		break;
+                break;
 
-	    case ACTION_ADD_GIFT:
-		Validation.Add(FORM_GIFT_NAME, Validator.StringLength(64), Validator.Required());
-		Validation.Add(FORM_GIFT_DESCRIPTION, Validator.Required());
+            case ACTION_ADD_GIFT:
+                Validation.Add(FORM_GIFT_NAME, Validator.StringLength(64), Validator.Required());
+                Validation.Add(FORM_GIFT_DESCRIPTION, Validator.Required());
 
-		if (!Validation.IsValid())
-		{
-		    return;
-		}
+                if (!Validation.IsValid())
+                {
+                    return;
+                }
 
-		var name = Request.Form[FORM_GIFT_NAME] as string;
-		var description = Request.Form[FORM_GIFT_DESCRIPTION] as string;
+                var name = Request.Form[FORM_GIFT_NAME] as string;
+                var description = Request.Form[FORM_GIFT_DESCRIPTION] as string;
 
-		HappyBridesDB.CreateGift(couple.Wishlist, name, description);
+                HappyBridesDB.CreateGift(couple.Wishlist, name, description);
 
-		break;
+                break;
 
-	    case ACTION_CHANGE_PRIORITY:
-		Validation.Add(FORM_GIFT_ID, Validator.Integer(), Validator.Required());
-		Validation.Add(FORM_GIFT_NEWPRIORITY, Validator.Integer(), Validator.Required());
+            case ACTION_CHANGE_PRIORITY:
+                Validation.Add(FORM_GIFT_ID, Validator.Integer(), Validator.Required());
+                Validation.Add(FORM_GIFT_NEWPRIORITY, Validator.Integer(), Validator.Required());
 
-		if (!Validation.IsValid())
-		{
-		    return;
-		}
+                if (!Validation.IsValid())
+                {
+                    return;
+                }
 
-		var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
-		var gift_newPriority = Request.Form[FORM_GIFT_NEWPRIORITY].AsInt();
+                var gift = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
+                var gift_newPriority = Request.Form[FORM_GIFT_NEWPRIORITY].AsInt();
 
-		//Ensure that the user didn't pass a forged gift id.
-		if (gift.GetOwningWishlist().id != couple.Wishlist.id)
-		{
-		    return;
-		}
+                //Ensure that the user didn't pass a forged gift id.
+                if (gift.GetOwningWishlist().id != couple.Wishlist.id)
+                {
+                    return;
+                }
 
-		gift.SetPriority(gift_newPriority);
+                gift.SetPriority(gift_newPriority);
 
-		break;
+                break;
 
-	    case ACTION_REMOVE_GIFT:
-		Validation.Add(FORM_GIFT_ID, Validator.Integer(), Validator.Required());
+            case ACTION_REMOVE_GIFT:
+                Validation.Add(FORM_GIFT_ID, Validator.Integer(), Validator.Required());
 
-		if (!Validation.IsValid())
-		{
-		    return;
-		}
+                if (!Validation.IsValid())
+                {
+                    return;
+                }
 
-		var gift_to_remove = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
+                var gift_to_remove = new GiftHandle(System.Int64.Parse(Request.Form[FORM_GIFT_ID]));
 
-		//Ensure that the user didn't pass a forged gift id.
-		if (gift_to_remove.GetOwningWishlist().id != couple.Wishlist.id)
-		{
-		    return;
-		}
+                //Ensure that the user didn't pass a forged gift id.
+                if (gift_to_remove.GetOwningWishlist().id != couple.Wishlist.id)
+                {
+                    return;
+                }
 
-		HappyBridesDB.DeleteGift(gift_to_remove);
+                HappyBridesDB.DeleteGift(gift_to_remove);
 
-		break;
+                break;
 
-	}
+        }
 
-	//Prevent refreshing from resubmitting POST's.
-	Response.Redirect("~/App/Main/Couple/Account");
+        //Prevent refreshing from resubmitting POST's.
+        Response.Redirect("~/App/Main/Couple/Account");
     }
 
 }
@@ -128,8 +128,8 @@
 @section head
 {
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-	    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-	    crossorigin="anonymous"></script>
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
 
     <script src="~/Content/js/wishlist.js"></script>
 }
@@ -140,7 +140,7 @@
     <hr />
     <img class="d-block mt-5 mb-4 mx-auto bg-white rounded-circle border shadow-sm" src="~/Content/img/icons/couple.png" width="192" height="192">
     <form method="post">
-	<input name="@FORM_ACTION" type="hidden" value="@ACTION_LOGOUT" required>
+        <input name="@FORM_ACTION" type="hidden" value="@ACTION_LOGOUT" required>
         <button class="d-block mx-auto btn btn-primary" type="submit">Logout</button>
     </form>
     <hr />
@@ -175,12 +175,12 @@
     <p class="text-center">Guest Code: <span class="text-primary">@couple.Wishlist.GetGuestCode()</span></p>
     <div class="w-50 p-1 mx-auto border rounded overflow-auto bg-light" id="wishlist">
         @foreach (var gift in couple.Wishlist.GetGifts())
-	{
+        {
             <div class="rounded p-2 mb-1 bg-white shadow-sm" id="@gift.id">
                 <h6>@gift.GetName()<span class="float-right fas fa-times-circle clickable" onclick="removeGift(@gift.id)"></span></h6>
                 <p>@gift.GetDescription()</p>
             </div>
-	}
+        }
     </div>
 
     <div class="modal fade" id="add_gift_modal" tabindex="-1" role="dialog">
@@ -191,17 +191,17 @@
                 </div>
                 <div class="modal-body">
                     <form method="post">
-			<div class="form-group">
-			    <label for="@FORM_GIFT_NAME">Name</label>
-			    <input class="form-control" name="@FORM_GIFT_NAME" type="text" placeholder="Enter gift name" required/>
-			</div>
-			<div class="form-group">
-			    <label for="@FORM_GIFT_DESCRIPTION">Description</label>
-			    <textarea class="form-control" name="@FORM_GIFT_DESCRIPTION" rows="4" placeholder="Enter gift description" required></textarea>
-			</div>
-			<input name="@FORM_ACTION" type="hidden" value="@ACTION_ADD_GIFT" required/>
-			<button class="d-block btn btn-primary mx-auto" type="submit">Add gift</button>
-		    </form>
+                        <div class="form-group">
+                            <label for="@FORM_GIFT_NAME">Name</label>
+                            <input class="form-control" name="@FORM_GIFT_NAME" type="text" placeholder="Enter gift name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="@FORM_GIFT_DESCRIPTION">Description</label>
+                            <textarea class="form-control" name="@FORM_GIFT_DESCRIPTION" rows="4" placeholder="Enter gift description" required></textarea>
+                        </div>
+                        <input name="@FORM_ACTION" type="hidden" value="@ACTION_ADD_GIFT" required />
+                        <button class="d-block btn btn-primary mx-auto" type="submit">Add gift</button>
+                    </form>
                 </div>
             </div>
         </div>

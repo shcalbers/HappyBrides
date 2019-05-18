@@ -23,83 +23,83 @@
 
     if (IsPost)
     {
-	Validation.Add(FORM_LOGIN_TYPE, Validator.Required());
+        Validation.Add(FORM_LOGIN_TYPE, Validator.Required());
 
-	if (!Validation.IsValid())
-	{
-	    return;
-	}
+        if (!Validation.IsValid())
+        {
+            return;
+        }
 
-	var login_type = Request.Form[FORM_LOGIN_TYPE] as string;
+        var login_type = Request.Form[FORM_LOGIN_TYPE] as string;
 
-	switch (login_type)
-	{
-	    case LOGIN_TYPE_COUPLE:
+        switch (login_type)
+        {
+            case LOGIN_TYPE_COUPLE:
 
-		Validation.Add(FORM_COUPLE_EMAIL, Validator.Required());
-		Validation.Add(FORM_COUPLE_PASSWORD, Validator.Required());
+                Validation.Add(FORM_COUPLE_EMAIL, Validator.Required());
+                Validation.Add(FORM_COUPLE_PASSWORD, Validator.Required());
 
-		if (!Validation.IsValid())
-		{
-		    return;
-		}
+                if (!Validation.IsValid())
+                {
+                    return;
+                }
 
-		var couple = new CoupleAgent(Session);
+                var couple = new CoupleAgent(Session);
 
-		var email = Request.Form[FORM_COUPLE_EMAIL] as string;
-		var password = Request.Form[FORM_COUPLE_PASSWORD] as string;
+                var email = Request.Form[FORM_COUPLE_EMAIL] as string;
+                var password = Request.Form[FORM_COUPLE_PASSWORD] as string;
 
-		couple.Login(email, password);
+                couple.Login(email, password);
 
-		if (couple.Identity == Identity.Couple)
-		{
-		    Response.Redirect("~/App/Main/Couple/Account");
-		}
-		else
-		{
-		    Validation.AddFormError("Incorrect username or password!");
-		}
+                if (couple.Identity == Identity.Couple)
+                {
+                    Response.Redirect("~/App/Main/Couple/Account");
+                }
+                else
+                {
+                    Validation.AddFormError("Incorrect username or password!");
+                }
 
-		break;
+                break;
 
-	    case LOGIN_TYPE_GUEST:
+            case LOGIN_TYPE_GUEST:
 
-		Validation.Add(FORM_GUEST_NAME, Validator.Required());
-		Validation.Add(FORM_GUEST_GUESTCODE, Validator.Required());
+                Validation.Add(FORM_GUEST_NAME, Validator.Required());
+                Validation.Add(FORM_GUEST_GUESTCODE, Validator.Required());
 
-		if (!Validation.IsValid())
-		{
-		    return;
-		}
+                if (!Validation.IsValid())
+                {
+                    return;
+                }
 
-		var guest = new GuestAgent(Session);
+                var guest = new GuestAgent(Session);
 
-		var name = Request.Form[FORM_GUEST_NAME] as string;
-		var guestcode = Request.Form[FORM_GUEST_GUESTCODE] as string;
+                var name = Request.Form[FORM_GUEST_NAME] as string;
+                var guestcode = Request.Form[FORM_GUEST_GUESTCODE] as string;
 
-		guest.Login(name, guestcode);
+                guest.Login(name, guestcode);
 
-		if (guest.Identity == Identity.Guest)
-		{
-		    Response.Redirect("~/App/Main/Guest/Account");
-		}
-		else
-		{
-		    Validation.AddFormError("Incorrect guest code!");
-		}
+                if (guest.Identity == Identity.Guest)
+                {
+                    Response.Redirect("~/App/Main/Guest/Account");
+                }
+                else
+                {
+                    Validation.AddFormError("Incorrect guest code!");
+                }
 
-		break;
+                break;
 
-	}
+        }
     }
 }
 
 @if (!Validation.IsValid())
 {
     <div class="text-center">
-	<div class="d-inline-block alert alert-danger" role="alert">
-	    @Html.ValidationSummary()
-	</div>
+        <div class="d-inline-block alert alert-danger" role="alert">
+            @Html.ValidationSummary()
+        </div>
     </div>
 }
 

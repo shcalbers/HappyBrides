@@ -9,60 +9,60 @@ namespace HappyBrides.Database
     public sealed class WishlistHandle
     {
 
-	public readonly long id;
+        public readonly long id;
 
-	public WishlistHandle(long id)
-	{
-	    this.id = id;
-	}
+        public WishlistHandle(long id)
+        {
+            this.id = id;
+        }
 
-	public string GetGuestCode()
-	{
-	    const string RETRIEVE_GUESTCODE_STATEMENT = "SELECT guestcode FROM Wishlist WHERE id = @0";
+        public string GetGuestCode()
+        {
+            const string RETRIEVE_GUESTCODE_STATEMENT = "SELECT guestcode FROM Wishlist WHERE id = @0";
 
-	    using (var connection = Connection.Open(DATABASE_NAME))
-	    {
-		return connection.QueryValue(RETRIEVE_GUESTCODE_STATEMENT, id);
-	    }
-	}
+            using (var connection = Connection.Open(DATABASE_NAME))
+            {
+                return connection.QueryValue(RETRIEVE_GUESTCODE_STATEMENT, id);
+            }
+        }
 
-	public List<GiftHandle> GetGifts()
-	{
-	    const string RETRIEVE_GIFTS_STATEMENT = "SELECT id FROM Gift WHERE wishlist_id = @0 ORDER BY priority ASC";
+        public List<GiftHandle> GetGifts()
+        {
+            const string RETRIEVE_GIFTS_STATEMENT = "SELECT id FROM Gift WHERE wishlist_id = @0 ORDER BY priority ASC";
 
-	    using (var connection = Connection.Open(DATABASE_NAME))
-	    {
-		var results = connection.Query(RETRIEVE_GIFTS_STATEMENT, id);
+            using (var connection = Connection.Open(DATABASE_NAME))
+            {
+                var results = connection.Query(RETRIEVE_GIFTS_STATEMENT, id);
 
-		List<GiftHandle> gifts = new List<GiftHandle>();
+                List<GiftHandle> gifts = new List<GiftHandle>();
 
-		foreach (var result in results)
-		{
-		    gifts.Add(new GiftHandle(result.id));
-		}
+                foreach (var result in results)
+                {
+                    gifts.Add(new GiftHandle(result.id));
+                }
 
-		return gifts;
-	    }
-	}
+                return gifts;
+            }
+        }
 
-	public List<GiftHandle> GetUnreservedGifts()
-	{
-	    const string RETRIEVE_GIFTS_STATEMENT = "SELECT id FROM Gift WHERE wishlist_id = @0 AND reserved = 0 ORDER BY priority ASC";
+        public List<GiftHandle> GetUnreservedGifts()
+        {
+            const string RETRIEVE_GIFTS_STATEMENT = "SELECT id FROM Gift WHERE wishlist_id = @0 AND reserved = 0 ORDER BY priority ASC";
 
-	    using (var connection = Connection.Open(DATABASE_NAME))
-	    {
-		var results = connection.Query(RETRIEVE_GIFTS_STATEMENT, id);
+            using (var connection = Connection.Open(DATABASE_NAME))
+            {
+                var results = connection.Query(RETRIEVE_GIFTS_STATEMENT, id);
 
-		List<GiftHandle> gifts = new List<GiftHandle>();
+                List<GiftHandle> gifts = new List<GiftHandle>();
 
-		foreach (var result in results)
-		{
-		    gifts.Add(new GiftHandle(result.id));
-		}
+                foreach (var result in results)
+                {
+                    gifts.Add(new GiftHandle(result.id));
+                }
 
-		return gifts;
-	    }
-	}
+                return gifts;
+            }
+        }
 
     }
 

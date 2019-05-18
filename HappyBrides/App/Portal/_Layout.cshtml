@@ -6,13 +6,13 @@
 
     switch (user.Identity)
     {
-	case Identity.Guest:
-	    Response.Redirect("~/App/Main/Guest/Account");
-	    break;
+        case Identity.Guest:
+            Response.Redirect("~/App/Main/Guest/Account");
+            break;
 
-	case Identity.Couple:
-	    Response.Redirect("~/App/Main/Couple/Account");
-	    break;
+        case Identity.Couple:
+            Response.Redirect("~/App/Main/Couple/Account");
+            break;
     }
 }
 

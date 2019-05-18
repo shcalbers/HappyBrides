@@ -1,5 +1,5 @@
 ﻿@using HappyBrides.Authentication
-@{ 
+@{
     Layout = "_Layout.cshtml";
 
     Page.Title = "Register";
@@ -17,46 +17,46 @@
 
     if (IsPost)
     {
-	Validation.Add(FORM_EMAIL, Validator.StringLength(254), Validator.Required());
+        Validation.Add(FORM_EMAIL, Validator.StringLength(254), Validator.Required());
 
-	Validation.Add(FORM_NAME, Validator.StringLength(64), Validator.Required());
-	Validation.Add(FORM_PARTNER_NAME, Validator.StringLength(64), Validator.Required());
+        Validation.Add(FORM_NAME, Validator.StringLength(64), Validator.Required());
+        Validation.Add(FORM_PARTNER_NAME, Validator.StringLength(64), Validator.Required());
 
-	Validation.Add(FORM_PASSWORD, Validator.StringLength(256), Validator.Required());
+        Validation.Add(FORM_PASSWORD, Validator.StringLength(256), Validator.Required());
 
-	if (!Validation.IsValid())
-	{
-	    return;
-	}
+        if (!Validation.IsValid())
+        {
+            return;
+        }
 
-	var couple = new CoupleAgent(Session);
+        var couple = new CoupleAgent(Session);
 
-	var email = Request.Form[FORM_EMAIL] as string;
+        var email = Request.Form[FORM_EMAIL] as string;
 
-	var name = Request.Form[FORM_NAME] as string;
-	var partnerName = Request.Form[FORM_PARTNER_NAME] as string;
+        var name = Request.Form[FORM_NAME] as string;
+        var partnerName = Request.Form[FORM_PARTNER_NAME] as string;
 
-	var password = Request.Form[FORM_PASSWORD] as string;
+        var password = Request.Form[FORM_PASSWORD] as string;
 
-	try
-	{
-	    couple.Register(email, password, name, partnerName);
+        try
+        {
+            couple.Register(email, password, name, partnerName);
 
-	    Response.Redirect("~/App/Main/Couple/Account");
-	}
-	catch
-	{
-	    Validation.AddFormError("An account using this email address already exists!");
-	}
+            Response.Redirect("~/App/Main/Couple/Account");
+        }
+        catch
+        {
+            Validation.AddFormError("An account using this email address already exists!");
+        }
     }
 }
 
 @if (!Validation.IsValid())
 {
     <div class="text-center">
-	<div class="d-inline-block alert alert-danger" role="alert">
-	    @Html.ValidationSummary()
-	</div>
+        <div class="d-inline-block alert alert-danger" role="alert">
+            @Html.ValidationSummary()
+        </div>
     </div>
 }
 
@@ -65,27 +65,27 @@
         <div class="col-lg-4 col-12 offset-lg-4 px-4 py-4 bg-white border rounded">
             <h4 class="text-center">Create a new account</h4>
             <hr />
-	    <form method="post">
-	        <div class="form-group">
-	            <label for="@FORM_EMAIL">Email address</label>
-	            <input class="form-control" name="@FORM_EMAIL" type="email" placeholder="Enter email" required />
-	        </div>
-	        <div class="form-row">
-	            <div class="form-group col">
-	                <label for="@FORM_NAME">Your name</label>
-	                <input class="form-control" name="@FORM_NAME" type="text" placeholder="Enter your name" required />
-	            </div>
-	            <div class="form-group col">
-	                <label for="@FORM_PARTNER_NAME">Partner's name</label>
-	                <input class="form-control" name="@FORM_PARTNER_NAME" type="text" placeholder="Enter your partner's name" required />
-	            </div>
-	        </div>
-	        <div class="form-group">
-	            <label for="@FORM_PASSWORD">Password</label>
-	            <input class="form-control" name="@FORM_PASSWORD" type="password" placeholder="Enter password" required />
-	        </div>
-	        <button class="d-block btn btn-primary mx-auto" type="submit">Register</button>
-	    </form>
+            <form method="post">
+                <div class="form-group">
+                    <label for="@FORM_EMAIL">Email address</label>
+                    <input class="form-control" name="@FORM_EMAIL" type="email" placeholder="Enter email" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="@FORM_NAME">Your name</label>
+                        <input class="form-control" name="@FORM_NAME" type="text" placeholder="Enter your name" required />
+                    </div>
+                    <div class="form-group col">
+                        <label for="@FORM_PARTNER_NAME">Partner's name</label>
+                        <input class="form-control" name="@FORM_PARTNER_NAME" type="text" placeholder="Enter your partner's name" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="@FORM_PASSWORD">Password</label>
+                    <input class="form-control" name="@FORM_PASSWORD" type="password" placeholder="Enter password" required />
+                </div>
+                <button class="d-block btn btn-primary mx-auto" type="submit">Register</button>
+            </form>
         </div>
     </div>
     <br />
