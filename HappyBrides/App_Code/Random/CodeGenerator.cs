@@ -22,7 +22,7 @@ namespace HappyBrides.Random
             return code;
         }
 
-        public static char GetRandomCharacter()
+        private static char GetRandomCharacter()
         {
             return VALID_CHARACTERS[random.Next(0, VALID_CHARACTERS.Length)];
         }
